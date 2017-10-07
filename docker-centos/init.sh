@@ -9,23 +9,13 @@ source /run/docker-bash-env
 
 # set storage first
 (
-    . /etc/sysconfig/docker-storage-setup
-    /usr/bin/docker-storage-setup
+    . /etc/sysconfig/docker-storage
 )
 
-# Run all the installed plugins
-mkdir -p /run/docker/plugins/
-ls -1 /usr/libexec/docker/*plugin |  \
-while read i;
-do
-    plugin=$(basename $i)
-    test -e /run/docker/plugins/$plugin.sock || mkfifo /run/docker/plugins/$plugin.sock
-    $i &
-done
 
 # Inhibit sd-notify for docker-containerd, we want to get the notification
 # from the docker process
-NOTIFY_SOCKET=/dev/null /usr/bin/docker-containerd-current \
+NOTIFY_SOCKET=/dev/null /usr/bin/docker-containerd \
     --listen unix:///run/containerd.sock \
     --shim /usr/bin/docker-containerd-shim-current \
     --start-timeout 2m &
@@ -35,9 +25,10 @@ do
       sleep 0.1
 done
 
-exec /usr/bin/docker-current daemon \
-          --config-file=/etc/docker/container-daemon.json \
-          --userland-proxy-path=/usr/libexec/docker/docker-proxy-current \
+sed -i 's#fd://#unix:///var/run/docker.sock#g' /etc/sysconfig/docker
+. /etc/sysconfig/docker
+
+exec /usr/bin/dockerd \
           $OPTIONS \
           $DOCKER_STORAGE_OPTIONS \
           $DOCKER_NETWORK_OPTIONS \

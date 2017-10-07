@@ -225,6 +225,16 @@
     },
     "mounts": [
 	{
+	    "source": "/usr/lib/os-release",
+	    "destination": "/usr/lib/os-release",
+	    "type": "bind",
+	    "options": [
+		"private",
+		"bind",
+		"ro"
+	    ]
+	},
+	{
 	    "source": "/tmp",
 	    "destination": "/tmp",
 	    "type": "bind",
@@ -241,7 +251,7 @@
 	    "destination": "/etc",
 	    "options": [
 		"rbind",
-		"rprivate",
+		"rslave",
 		"rw",
 		"mode=755"
 	    ]
@@ -286,7 +296,7 @@
 	    "options": [
 		"rbind",
 		"rw",
-		"rprivate",
+		"rshared",
 		"mode=755"
             ]
 	},
