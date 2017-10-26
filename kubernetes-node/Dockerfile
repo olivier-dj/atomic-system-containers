@@ -9,4 +9,4 @@ LABEL bzcomponent="$NAME" \
         maintainer="Jason Brooks <jbrooks@redhat.com>"
 
 RUN dnf -y --setopt=tsflags=nodocs update && dnf clean all
-RUN dnf install -y --setopt=tsflags=nodocs kubernetes-node findutils && dnf clean all
+RUN dnf install -y --setopt=tsflags=nodocs kubernetes-node-1.7.7-1.fc28.x86_64 findutils && dnf clean all

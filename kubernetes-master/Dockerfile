@@ -10,4 +10,4 @@ LABEL bzcomponent="$NAME" \
 
 RUN dnf -y --setopt=tsflags=nodocs update && dnf clean all
 RUN groupadd -g 994 kube && useradd -u 996 -g 994 kube
-RUN dnf install -y kubernetes-master findutils && dnf clean all
+RUN dnf install -y kubernetes-master-1.7.7-1.fc28.x86_64 findutils && dnf clean all
