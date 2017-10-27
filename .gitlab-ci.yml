@@ -32,10 +32,10 @@ deploy tag:
     - export IMAGE_PREFIX="gitlab-registry.cern.ch/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/"
     - for CONTAINER in $CONTAINERS ; do
           if [ ${CONTAINER} == "docker-centos" ] ; then
-              _CI_BUILD_TAG=$(echo $CI_BUILD_TAG | awk -F --- '{print $2}')
+              _CI_BUILD_TAG=$(echo $CI_BUILD_TAG | awk -F --- '{print $2}') ;
           else
-              _CI_BUILD_TAG=$(echo $CI_BUILD_TAG | awk -F --- '{print $1}')
-          fi
+              _CI_BUILD_TAG=$(echo $CI_BUILD_TAG | awk -F --- '{print $1}') ;
+          fi ;
           docker pull ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ;
           docker tag ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ${IMAGE_PREFIX}${CONTAINER}:$_CI_BUILD_TAG ;
           docker push ${IMAGE_PREFIX}${CONTAINER}:$_CI_BUILD_TAG ;
