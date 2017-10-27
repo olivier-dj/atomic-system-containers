@@ -22,20 +22,27 @@ deploy branch:
     - master
   tags:
     - cci-swarm-builder
+
+# For now, we only tag kubernetes and docker. The tag must have the
+# following format: <kubernetes-tag>---<docker-tag> e.g. v1.8.1---17.09
 deploy tag:
   stage: deploy
   image: gitlab-registry.cern.ch/cloud/ciadm
   script:
     - export IMAGE_PREFIX="gitlab-registry.cern.ch/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/"
     - for CONTAINER in $CONTAINERS ; do
+          if [ ${CONTAINER} == "docker-centos" ] ; then
+              _CI_BUILD_TAG=$(echo $CI_BUILD_TAG | awk -F --- '{print $2}')
+          else
+              _CI_BUILD_TAG=$(echo $CI_BUILD_TAG | awk -F --- '{print $1}')
+          fi
           docker pull ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ;
-          docker tag ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_TAG ;
-          docker push ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_TAG ;
-          docker rmi ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_TAG ;
+          docker tag ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ${IMAGE_PREFIX}${CONTAINER}:$_CI_BUILD_TAG ;
+          docker push ${IMAGE_PREFIX}${CONTAINER}:$_CI_BUILD_TAG ;
+          docker rmi ${IMAGE_PREFIX}${CONTAINER}:$_CI_BUILD_TAG ;
           docker rmi ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ;
       done
   only:
     - tags
   tags:
     - cci-swarm-builder
-
