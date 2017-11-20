@@ -9,6 +9,7 @@ LABEL maintainer="Giuseppe Scrivano <gscrivan@redhat.com>" \
 RUN yum install -y yum-utils \
     device-mapper-persistent-data \
     lvm2 \
+    xfsprogs \
     && yum-config-manager \
     --add-repo \
     https://download.docker.com/linux/centos/docker-ce.repo \
