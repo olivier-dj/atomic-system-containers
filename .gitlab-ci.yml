@@ -3,20 +3,23 @@ stages:
 before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN gitlab-registry.cern.ch
   - export CONTAINERS="kubernetes-apiserver kubernetes-scheduler kubernetes-controller-manager kubernetes-kubelet kubernetes-proxy docker-centos"
+# keep kubernetes-node and kubernetes-master images by running a container,
+# so that the cleanup script doesn't remove them
 deploy branch:
   stage: deploy
   image: gitlab-registry.cern.ch/cloud/ciadm
   script:
-    - docker build --pull --rm -t kubernetes-node:rawhide kubernetes-node/
-    - docker build --pull --rm -t kubernetes-master:rawhide kubernetes-master/
+    - docker pull registry.fedoraproject.org/fedora:rawhide
+    - docker run -d registry.fedoraproject.org/fedora:rawhide sleep 3600
+    - docker build --rm -t kubernetes-node:rawhide kubernetes-node/
+    - docker run -d kubernetes-node:rawhide sleep 3600
+    - docker build --rm -t kubernetes-master:rawhide kubernetes-master/
+    - docker run -d kubernetes-master:rawhide sleep 3600
     - export IMAGE_PREFIX="gitlab-registry.cern.ch/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/"
     - for CONTAINER in $CONTAINERS ; do
           docker build --rm -t ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ${CONTAINER} ;
           docker push ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ;
-          docker rmi ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ;
       done
-    - docker rmi kubernetes-node:rawhide
-    - docker rmi kubernetes-master:rawhide
   except:
     - tags
     - master
@@ -39,8 +42,6 @@ deploy tag:
           docker pull ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ;
           docker tag ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ${IMAGE_PREFIX}${CONTAINER}:$_CI_BUILD_TAG ;
           docker push ${IMAGE_PREFIX}${CONTAINER}:$_CI_BUILD_TAG ;
-          docker rmi ${IMAGE_PREFIX}${CONTAINER}:$_CI_BUILD_TAG ;
-          docker rmi ${IMAGE_PREFIX}${CONTAINER}:$CI_BUILD_REF ;
       done
   only:
     - tags
