@@ -13,7 +13,7 @@ RUN yum install -y yum-utils \
     && yum-config-manager \
     --add-repo \
     https://download.docker.com/linux/centos/docker-ce.repo \
-    && yum install -y docker-ce-17.03.1.ce \
+    && yum install -y docker-ce-17.03.1.ce docker-ce-selinux-17.03.1 \
     && mkdir -p /exports/hostfs/etc/docker \
     && yum clean all
 
