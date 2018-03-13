@@ -28,7 +28,7 @@ done
 sed -i 's#fd://#unix:///var/run/docker.sock#g' /etc/sysconfig/docker
 . /etc/sysconfig/docker
 
-exec /usr/bin/dockerd \
+exec /usr/bin/dockerd --add-runtime nvidia=/bin/nvidia-container-runtime --default-runtime nvidia \
           $OPTIONS \
           $DOCKER_STORAGE_OPTIONS \
           $DOCKER_NETWORK_OPTIONS \
