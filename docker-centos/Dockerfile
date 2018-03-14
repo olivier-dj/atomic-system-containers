@@ -6,10 +6,17 @@ LABEL maintainer="Giuseppe Scrivano <gscrivan@redhat.com>" \
       atomic.type="system" \
       architecture="x86_64"
 
-RUN yum install -y yum-utils \
+COPY cuda-linux.9.0.176-22781540.run /bin/
+COPY cuda-path.sh /etc/profile.d/
+
+RUN yum install -y yum-utils wget \
     device-mapper-persistent-data \
     lvm2 \
+    perl-Getopt-Long \
     xfsprogs \
+    && chmod u+x /bin/cuda-linux.9.0.176-22781540.run \
+    && cuda-linux.9.0.176-22781540.run -noprompt \
+    && rm /bin/cuda-linux.9.0.176-22781540.run \
     && yum-config-manager \
     --add-repo \
     https://download.docker.com/linux/centos/docker-ce.repo \
