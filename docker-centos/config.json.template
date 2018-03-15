@@ -256,6 +256,17 @@
 		"mode=755"
 	    ]
 	},
+    {
+        "type": "bind",
+        "source": "/",
+        "destination": "/host",
+        "options": [
+        "rbind",
+        "rslave",
+        "rw",
+        "mode=755"
+        ]
+    },
 	{
 	    "type": "bind",
 	    "source": "/lib/modules",
