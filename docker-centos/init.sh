@@ -7,14 +7,14 @@ printf %s $LABEL > /proc/self/attr/exec
 
 source /run/docker-bash-env
 
+#set cuda, nvidia context
+source /usr/bin/cuda-context.sh
+
 # set storage first
 (
     . /etc/sysconfig/docker-storage
 )
 
-PATH=/host/usr/local/cuda-9.0/bin:$PATH
-LD_LIBRARY_PATH=/host/usr/local/cuda-9.0/lib64:$LD_LIBRARY_PATH
-LD_LIBRARY_PATH=/host/usr/local/cuda-9.0/lib:$LD_LIBRARY_PATH
 
 # Inhibit sd-notify for docker-containerd, we want to get the notification
 # from the docker process
