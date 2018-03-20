@@ -32,6 +32,9 @@ sed -i 's#fd://#unix:///var/run/docker.sock#g' /etc/sysconfig/docker
 . /etc/sysconfig/docker
 
 exec /usr/bin/dockerd --add-runtime nvidia=/bin/nvidia-container-runtime --default-runtime nvidia \
+          --exec-opt native.cgroupdriver=systemd \
+          --userland-proxy-path=/host/usr/libexec/docker/docker-proxy-current \
+          --seccomp-profile=/host/etc/docker/seccomp.json \
           $OPTIONS \
           $DOCKER_STORAGE_OPTIONS \
           $DOCKER_NETWORK_OPTIONS \

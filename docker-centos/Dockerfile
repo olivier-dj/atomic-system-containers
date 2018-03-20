@@ -63,6 +63,8 @@ RUN ln -s /host/usr/lib64/libEGL_nvidia.so.0 /usr/lib64/ && \
     ln -s /host/usr/lib64/libnvidia-ifr.so.1 /usr/lib64/ && \
     ln -s /host/usr/lib64/libnvidia-tls.so.384.111 /usr/lib64/ && \
     ln -s /host/usr/lib64/libnvcuvid.so.1 /usr/lib64/ && \
+    ln -s /host/usr/lib64/libnvcuvid.so /usr/lib64/ && \
+    ln -s /host/usr/lib64/libnvcuvid.so.384.111 /usr/lib64/ && \
     mkdir -p /usr/lib64/tls && \
     ln -s /host/usr/lib64/tls/libnvidia-tls.so.384.111 /usr/lib64/tls/ && \
     ln -s /host/usr/lib64/libnvidia-cfg.so /usr/lib64/ && \
@@ -72,16 +74,56 @@ RUN ln -s /host/usr/lib64/libEGL_nvidia.so.0 /usr/lib64/ && \
     ln -s /host/usr/lib64/libnvidia-cfg.so.1 /usr/lib64/ && \
     ln -s /host/usr/lib64/libnvidia-fbc.so /usr/lib64/ && \
     ln -s /host/usr/lib64/libnvidia-ml.so /usr/lib64/ && \
-    ln -s /host/usr/bin/nvidia-smi /usr/bin/ && \
+    ln -s /host/usr/lib64/libcuda.so /usr/lib64/libcuda.so && \
+    ln -s /host/usr/lib64/libcuda.so.1 /usr/lib64/libcuda.so.1 && \
+    ln -s /host/usr/lib64/libcuda.so.384.111 /usr/lib64/
+
+RUN ln -s /host/usr/lib/libEGL_nvidia.so.0 /usr/lib/ && \
+    ln -s /host/usr/lib/libEGL_nvidia.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libGLESv1_CM_nvidia.so.1 /usr/lib/ && \
+    ln -s /host/usr/lib/libGLESv1_CM_nvidia.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libGLESv2_nvidia.so.2 /usr/lib/ && \
+    ln -s /host/usr/lib/libGLESv2_nvidia.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libGLX_nvidia.so.0 /usr/lib/ && \
+    ln -s /host/usr/lib/libGLX_nvidia.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-compiler.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-eglcore.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-encode.so /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-encode.so.1 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-encode.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-fatbinaryloader.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-fbc.so /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-fbc.so.1 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-fbc.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-glcore.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-glsi.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-ifr.so /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-ifr.so.1 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-ifr.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-ml.so /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-ml.so.1 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-ml.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-opencl.so.1 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-opencl.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-ptxjitcompiler.so /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-ptxjitcompiler.so.1 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-ptxjitcompiler.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvidia-tls.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libvdpau_nvidia.so /usr/lib/ && \
+    ln -s /host/usr/lib/libcuda.so /usr/lib/ && \
+    ln -s /host/usr/lib/libcuda.so.1 /usr/lib/ && \
+    ln -s /host/usr/lib/libcuda.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvcuvid.so /usr/lib/ && \
+    ln -s /host/usr/lib/libnvcuvid.so.384.111 /usr/lib/ && \
+    ln -s /host/usr/lib/libnvcuvid.so.1 /usr/lib/
+
+RUN ln -s /host/usr/bin/nvidia-smi /usr/bin/ && \
     ln -s /host/usr/bin/nvidia-debugdump /usr/bin/ && \
     ln -s /host/usr/bin/nvidia-persistenced /usr/bin/ && \
     ln -s /host/usr/bin/nvidia-cuda-mps-control /usr/bin/ && \
     ln -s /host/usr/bin/nvidia-cuda-mps-server /usr/bin/
 
-
 # Copy /etc/oci-umount.conf over if it exists
 RUN (test -e /etc/oci-umount.conf && cp /etc/oci-umount.conf /exports/hostfs/etc) || true
-
-
 
 CMD ["/usr/bin/init.sh"]
