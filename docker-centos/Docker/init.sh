@@ -8,7 +8,7 @@ printf %s $LABEL > /proc/self/attr/exec
 source /run/docker-bash-env
 
 #set cuda, nvidia context
-source /usr/bin/cuda-context.sh
+source /usr/bin/nvidia-context.sh
 
 # set storage first
 (
